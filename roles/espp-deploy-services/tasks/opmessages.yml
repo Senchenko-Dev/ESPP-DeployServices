@@ -1,0 +1,38 @@
+- debug:
+    msg: "#============== Deploy Service opmessagestosendsms ================#"
+
+- name: Create folder if not exists
+  file:
+    path: "{{ path_to_folder }}/{{ name_folder_opmessages }}"
+    state: directory
+
+- name: Copy appsettings.json
+  template: 
+    src: appsettings_opmessagestosendsms.json
+    dest: "{{ path_to_folder }}/{{ name_folder_opmessages }}/appsettings.json"
+
+- name: Create compose opmessagestosendsms.yml
+  template:
+    src: deploy_opmessagestosendsms.yml.j2
+    dest: "{{ path_to_folder }}/{{ name_folder_opmessages }}/deploy_opmessagestosendsms.yml"
+
+- name: Copy bash file
+  copy:
+    src: deploy_opmessagestosendsms.sh
+    dest: "{{ path_to_folder }}/{{ name_folder_opmessages }}/deploy_opmessagestosendsms.sh"
+    mode: "0777"
+
+- name: Copy hosting.json
+  copy:
+    src: hosting.json
+    dest: "{{ path_to_folder }}/{{ name_folder_opmessages }}"
+
+- name: Copy NLog.config
+  copy:
+    src: NLog.config
+    dest: "{{ path_to_folder }}/{{ name_folder_opmessages }}"
+
+# - name: Launch script deploy_opmessagestosendsms.sh
+#   shell: ./deploy_opmessagestosendsms.sh
+#   args:
+#     chdir: "{{ path_to_folder }}/{{ name_folder_opmessages }}"

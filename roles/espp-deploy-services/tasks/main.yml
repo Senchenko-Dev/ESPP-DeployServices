@@ -1,0 +1,14 @@
+- name: import esbv3conversion
+  import_tasks: esbv.yml
+  tags:
+    - esbv
+
+- name: import opmessagestosendsms
+  import_tasks: opmessages.yml
+  tags:
+    - opmessages
+    
+#- name: import del
+#  import_tasks: del.yaml
+#  tags:
+#    - del

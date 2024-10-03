@@ -1,0 +1,32 @@
+- debug:
+    msg: "#============== Deploy Service esbv3conversion ================#"
+
+- name: Create folder if not exists
+  file:
+    path: "{{ path_to_folder }}/{{ name_folder_esbv3conversion }}"
+    state: directory
+
+- name: Copy appsettings.json
+  template: 
+    src: appsetings_esbv3conversion.json
+    dest: "{{ path_to_folder }}/{{ name_folder_esbv3conversion }}/appsettings.json"
+
+- name: Create compose esbv3conversion.yml
+  template:
+    src: deploy_esbv3conversion.yml.j2
+    dest: "{{ path_to_folder }}/{{ name_folder_esbv3conversion }}/esbv3conversion.yml"
+
+- name: Copy bash file
+  copy:
+    src: deploy_esbv3conversion.sh
+    dest: "{{ path_to_folder }}/{{ name_folder_esbv3conversion }}/deploy_esbv3conversion.sh"
+    mode: "0777"
+
+# - name: Launch script deploy_esbv3conversion.sh
+#   shell: ./deploy_esbv3conversion.sh
+#   args:
+#     chdir: "{{ path_to_folder }}/{{ name_folder_esbv3conversion }}"
+
+
+
+

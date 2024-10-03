@@ -1,0 +1,46 @@
+{
+  "Endpoints": {
+      "Http": {
+          "Url": "{{ Url }}"
+      }
+  },
+"WmqConfig": {
+  "Channel": "ESPP.SVRCONN",
+  "QueueManager": "IP2.GTW.DEV",
+  "RequestQueue": "ESPP_TO_ESB",
+  "ResponseQueue": "ESB_TO_ESPP_SEND_PAYMENT_HUB",
+  "Timeout": 120,
+  "MaxThreads": 5,
+  "ThreadsInterval": 1000,
+  "MessageInterval": 200,
+  "FromSystem": "ESPP",
+  "Signer": "ESPP",
+  "SecretKeyId": "ESPP_2493",
+  "SecretKeyHex": "ACD577971FD97A4CEEAC1685BED34551F52FA17C284C44BC0ABF70D82F287857",
+  "SignerId": "ESPP",
+  "MaxMessageSize": 999999999,
+  "UserId": "{{ UserId }}",
+  "Password": "{{ Password }}",
+  "SendPaymentHubCommandService": "SendPaymentHubCommand",
+  "DebugLog": false,
+  "ConnectionName": "{{ ConnectionName }}"
+//    "WebSpheraHost": "WebSpheraHost",
+//    "WebSpheraPort": 5000
+},
+"PaySystemConfig": {
+  "PaySystemUri": "{{ PaySystemUri }}",
+  "Timeout": "00:01:00",
+  "ConnectionTimeout": "00:00:10",
+  "ConnectionLimit": 500
+},
+"CommonConfig": {
+  "DetailLog": true
+},
+"Logging": {
+  "LogLevel": {
+    "Default": "Information",
+    "Microsoft.AspNetCore": "Information"
+  }
+},
+"AllowedHosts": "*"
+}

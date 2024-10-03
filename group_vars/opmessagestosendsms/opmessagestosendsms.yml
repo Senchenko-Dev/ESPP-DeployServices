@@ -1,0 +1,11 @@
+#------------appsetings.json------------#
+Host: "10.7.27.98"
+Port: "1414"
+UserId: "svcgo-espp"
+Password: "qspp-pwd"
+authority: "https://dev-espp-ap1234.go.rshbank.ru:6025/am/cashier"
+audience: "http://identitymanager.ekassir.com/trust/initial/cashier/resources"
+
+#--------Yaml File--------#
+ekassir_opmessagestosendsms: repohub.ekassir.com/ekassir.opmessagestosendsms:1.0.23363.1.24044101278
+hosts: "dev-espp-ap1234.go.rshbank.ru:10.7.88.7"

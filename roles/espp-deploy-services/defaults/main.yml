@@ -1,0 +1,10 @@
+---
+path_to_folder: "/workdir/ekassir-int"
+name_folder_esbv3conversion: "esbv3conversion"
+name_folder_opmessages: "opmessagestosendsms"
+
+
+
+docker_service_dc_id: "{{ dc_id | default(1, true) }}"
+
+

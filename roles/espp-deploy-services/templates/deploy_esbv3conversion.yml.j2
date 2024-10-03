@@ -1,0 +1,94 @@
+---
+version: "3.8"
+services:
+  esbv3conversion:
+    image: {{ ekassir_esbv3conversion }}
+    read_only: false
+    hostname: esbv3conversions{{ "{{" }} .Task.Slot {{ "}}" }}
+    stop_grace_period: 30s
+    environment:
+      COMPlus_EnableDiagnostics: 
+      ASPNETCORE_URLS: http://+:5000
+      DC_ID: {{ overrides_from_child_role.dc_id | default(docker_service_dc_id, true) }}
+      DOCKER_SERVICE_ID: '{{ "{{" }} .Service.ID {{ "}}" }}'
+      DOCKER_SERVICE_NAME: '{{ "{{" }} .Service.Name {{ "}}" }}'
+      DOCKER_SERVICE_IMAGE: '{{ "{{" }} index .Service.Labels "com.docker.stack.image" {{ "}}" }}'
+      DOCKER_SERVICE_STACK: '{{ "{{" }} index .Service.Labels "com.docker.stack.namespace" {{ "}}" }}'
+      DOCKER_NODE_ID: '{{ "{{" }} .Node.ID {{ "}}" }}'
+      DOCKER_NODE_HOSTNAME: '{{ "{{" }} .Node.Hostname {{ "}}" }}'
+      DOCKER_NODE_PLATFORM_ARCHITECTURE: '{{ "{{" }} .Node.Platform.Architecture {{ "}}" }}'
+      DOCKER_NODE_PLATFORM_OS: '{{ "{{" }} .Node.Platform.OS {{ "}}" }}'
+      DOCKER_TASK_ID: '{{ "{{" }} .Task.ID {{ "}}" }}'
+      DOCKER_TASK_NAME: '{{ "{{" }} .Task.Name {{ "}}" }}'
+      DOCKER_TASK_SLOT: '{{ "{{" }} .Task.Slot {{ "}}" }}'
+      SSL_CERT_DIR: /app/bundle
+    ports:
+      - target: 5000
+        published: 34083
+        protocol: tcp
+        mode: ingress
+    networks:
+      - ekassir-int
+    healthcheck:
+      test: ["CMD-SHELL", "wget --no-check-certificate -qO- -Y off http://127.0.0.1:5000/health | grep -siq Healthy >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 15s
+      retries: 3
+      start_period: 60s
+    deploy:
+      mode: replicated
+      replicas: 1
+      endpoint_mode: vip
+      restart_policy:
+        condition: any
+        delay: 10s
+        max_attempts: 10
+        window: 60s
+      update_config:
+        parallelism: 1
+        delay: 10s
+        failure_action: continue
+        monitor: 10s
+        max_failure_ratio: 0
+        order: stop-first
+      rollback_config:
+        parallelism: 1
+        delay: 1s
+        failure_action: continue
+        monitor: 5s
+        max_failure_ratio: 0
+        order: start-first
+      resources:
+        reservations:
+          memory: 100M
+          cpus: "0.1"
+        limits:
+          memory: 500M
+      # placement:
+      #  constraints:
+      #    - node.labels.loadstack == rshb
+      labels:
+        - io.portainer.accesscontrol.public
+    logging:
+      driver: journald
+      options:
+        labels: com.docker.swarm.service.name,com.docker.stack.namespace
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - {"type": "tmpfs", "target": "/tmp"}
+      - {"type": "tmpfs", "target": "/run"}
+    secrets:
+      - source: app-appsettings_json
+        target: /app/appsettings.json
+        uid: "9000"
+        gid: "9000"
+        mode: 0644
+
+networks:
+  ekassir-int:
+    external: true
+
+secrets:
+  app-appsettings_json:
+    file: appsettings.json
+    name: ekassir_rshb_esbv3conversion-4f5ebe5558e121484fe05dcbc939606c

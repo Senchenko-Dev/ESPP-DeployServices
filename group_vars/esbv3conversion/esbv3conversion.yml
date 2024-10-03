@@ -1,9 +1,0 @@
-# Настройки appsettings.json
-PaySystemUri: "http://10.7.88.7:29311"
-Url: "http://+:5000"
-ConnectionName: "10.7.27.98(1414)"
-UserId: "svcgo-espp"
-Password: "qspp-pwd"
-
-#--------Yaml File--------#
-ekassir_esbv3conversion: repohub.ekassir.com/ekassir.rshb.esbv3conversion:777.24191112841
